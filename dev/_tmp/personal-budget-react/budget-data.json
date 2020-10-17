@@ -1,0 +1,30 @@
+[
+    {
+        "title": "Eat out",
+        "budget": 25
+    },
+    {
+        "title": "Rent",
+        "budget": 375
+    },
+    {
+        "title": "Grocery",
+        "budget": 110
+    },
+    {
+        "title": "Vacation",
+        "budget": 300
+    },
+    {
+        "title": "Necessities",
+        "budget": 100
+    },
+    {
+        "title": "Technology",
+        "budget": 1000
+    },
+    {
+        "title": "Car Repair",
+        "budget": 400
+    }
+]
