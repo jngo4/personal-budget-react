@@ -1,54 +1,54 @@
-import React from 'react'
-import axios from 'axios'
-import Chart from 'chart.js'
-export default class extends React.Component {
-    constructor(props) {
+import React, { Component } from 'react';
+import {Pie} from 'react-chartjs-2';
+import axios from 'axios';
+
+export default class Chart extends Component
+{
+   constructor(props) {
       super(props);
+      this.state = {
+        Data: {}
+      }
     }
-    componentDidMount () {
-        const script = document.createElement("script");
-    
-        script.src = "https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js";
-        script.src= "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js";
-        script.async = true;
-        document.body.appendChild(script);
-
-        var dataSource = {
-            datasets: [
-                {
-                    data: [],
-                    backgroundColor: [
-                        '#ffcd56',
-                        '#ff6384',
-                        '#36a2eb',
-                        '#fd6b19',
-                        '#03fc41',
-                        '#0335fc',
-                        '#e303fc',
-                    ]
-                }
-            ],
-            labels: []
+    componentDidMount() {
+      axios.get('http://localhost:4200/budget')
+        .then(res => {
+          const budg = res.data;
+          let title = [];
+          let budget = [];
+          for (var i = 0; i < budg.length; i++) {
+            title.push(budg[i].title);
+            budget.push(budg[i].budget);
         };
-
-    function createChart() {
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myPieChart = new Chart(ctx, {
-            type: 'pie',
-            data: dataSource
-        });
+          this.setState({ 
+            Data: {
+              labels: title,
+              datasets:[
+                 {
+                    data: budget ,
+                    backgroundColor:[
+                      '#ffcd56',
+                      '#ff6384',
+                      '#36a2eb',
+                      '#fd6b19',
+                      '#03fc41',
+                      '#0335fc',
+                      '#e303fc',
+                  ]
+                 }
+              ]
+           }
+           });
+        })
     }
-
-    function getBudget() {
-        axios.get('http://localhost:3000/budget')
-        .then(function (res) {
-            for (var i = 0; i < res.data.length; i++) {
-                dataSource.datasets[0].data[i] = res.data[i].budget;
-                dataSource.labels[i] = res.data[i].title;
-            }
-            createChart();
-        });
-    }
-    getBudget();
-    }
-};
+ render()
+   {
+      return(
+        <div>
+        <Pie
+          data={this.state.Data}
+          options={{maintainAspectRatio: false}}/>
+     </div>
+      )
+   }
+}
